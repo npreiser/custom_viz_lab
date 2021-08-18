@@ -1,0 +1,15 @@
+.nr1-30f3b4d4-3fe2-4d13-8c1c-62b65145aec6 .EmptyState,.nr1-30f3b4d4-3fe2-4d13-8c1c-62b65145aec6 .ErrorState{
+  height:100%;
+  text-align:center; }
+  .nr1-30f3b4d4-3fe2-4d13-8c1c-62b65145aec6 .EmptyState-cardBody,.nr1-30f3b4d4-3fe2-4d13-8c1c-62b65145aec6 .ErrorState-cardBody{
+    height:100%;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    justify-content:center; }
+
+.nr1-30f3b4d4-3fe2-4d13-8c1c-62b65145aec6 .ErrorState-headingText{
+  color:#a9a9a9; }
+
+
+/*# sourceMappingURL=30f3b4d4-3fe2-4d13-8c1c-62b65145aec6--styles~7b9a6b3c.css.map*/
