@@ -1,7 +1,7 @@
 {
     "schemaType": "VISUALIZATION",
     "id": "animated-charts",
-    "displayName": "AnimatedCharts",
+    "displayName": "AnimatedChart_nickp",
     "description": "",
     "configuration": [
         {
@@ -25,15 +25,15 @@
         },
         {
             "name": "fill",
-            "title": "Fill color",
+            "title": "Bar Chart Fill color",
             "description": "A fill color to override the default fill color",
             "type": "string"
         },
         {
-            "name": "stroke",
-            "title": "Stroke color",
-            "description": "A stroke color to override the default stroke color",
-            "type": "string"
+            "name": "intervalms",
+            "title": "Chart Toggle time",
+            "description": "How frequent to switch the chart",
+            "type": "number"
         }
     ]
 }

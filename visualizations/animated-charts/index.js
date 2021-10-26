@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as V from 'victory';
-import { VictoryBar, VictoryScatter, VictoryChart, VictoryTheme, VictoryPie } from 'victory';
+import { VictoryBar, VictoryScatter, VictoryChart, VictoryTheme, VictoryPie, VictoryLine } from 'victory';
 import { Card, CardBody, HeadingText, NrqlQuery, Spinner, AutoSizer } from 'nr1';
 
 export default class Nr1AnimationViz1Visualization extends React.Component {
@@ -20,6 +20,8 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
          * a custom chart configuration.
          */
         stroke: PropTypes.string,
+
+        intervalms: PropTypes.number,
         /**
          * An array of objects consisting of a nrql `query` and `accountId`.
          * This should be a standard prop for any NRQL based visualizations.
@@ -36,27 +38,45 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activequeryindex: 0
+            activequeryindex: 0,
+            charttypeindex: 0
         };
     }
 
 
     /** Method called when the react component mounts (is loaded)  */
     componentDidMount() {
+
+        const { nrqlQueries, stroke, fill,intervalms } = this.props;
+        let intval = 6000;
+        if(intervalms != undefined)
+        {
+            intval = intervalms
+        }
         this.setStateInterval = window.setInterval(() => {   // create a timer 
 
-            const { nrqlQueries, stroke, fill } = this.props;
+            const { nrqlQueries, stroke, fill,intervalms } = this.props;
             // use a temp variable to determine next value of index:
+
+           
             var temp = this.state.activequeryindex;
             temp++;
             if (temp > nrqlQueries.length - 1)
                 temp = 0;
 
+            // toggle chart type index
+            var temp2 = this.state.charttypeindex;
+            if (temp2 == 0)
+                temp2 = 1
+            else
+                temp2 = 0;
+
             this.setState({
                 pieData: this.getRandomData(),
-                activequeryindex: temp
+                activequeryindex: temp,
+                charttypeindex: temp2
             });
-        }, 6000);   // every X ms
+        }, intval);   // every X ms
     }
 
     //** called when comp is removed,   */
@@ -76,7 +96,7 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
         return Array(range).fill().map((x, i) => i);;
     }
 
-   
+
     getRandomData() {
         var obj = [];
         obj.push({ x: "Cats", y: this.random(10, 50) });
@@ -99,6 +119,8 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
 
     render() {
         const { nrqlQueries, stroke, fill } = this.props;
+
+        const { charttypeindex } = this.state;
 
         const nrqlQueryPropsAvailable =
             nrqlQueries &&
@@ -127,12 +149,29 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
                                 return <ErrorState />;
                             }
 
+
+
                             const testme = this.transformDataPie(data);
-                            return (
-                                <VictoryChart animate={{ duration: 2000 }}>
-                                    <VictoryPie colorScale={["tomato", "orange", "gold", "cyan", "navy"]} data={testme} />
-                                </VictoryChart>
-                            );
+
+                            const fillcolor = fill;
+                            if (charttypeindex == 0) {
+                                return (
+                                   
+
+                                        <VictoryPie colorScale={["tomato", "orange", "gold", "cyan", "navy"]} data={testme}  />
+
+                                   
+                                );
+                            }
+                            else {
+                                return (
+                                    <VictoryChart animate={{ duration: 5000 }}>
+
+                                        <VictoryBar  style={{ data: { fill: fillcolor } }} data={testme}  />
+
+                                    </VictoryChart>
+                                );
+                            }
                         }}
                     </NrqlQuery>
                 )}
@@ -157,7 +196,7 @@ const EmptyState = () => (
                 An example NRQL query you can try is:
             </HeadingText>
             <code>
-                FROM NrUsage SELECT sum(usage) FACET metric SINCE 1 week ago
+                FROM Transaction SELECT count(*) FACET appName Limit 5
             </code>
         </CardBody>
     </Card>
