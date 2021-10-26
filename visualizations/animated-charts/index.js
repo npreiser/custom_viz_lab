@@ -13,7 +13,7 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
          * A fill color to override the default fill color. This is an example of
          * a custom chart configuration.
          */
-        fill: PropTypes.string,
+       // backgroundcolor: PropTypes.string,
 
         /**
          * A stroke color to override the default stroke color. This is an example of
@@ -30,6 +30,7 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
             PropTypes.shape({
                 accountId: PropTypes.number,
                 query: PropTypes.string,
+                fill: PropTypes.string,
             })
         ),
     };
@@ -118,7 +119,7 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
 
 
     render() {
-        const { nrqlQueries, stroke, fill } = this.props;
+        const { nrqlQueries, stroke, backgroundcolor } = this.props;
 
         const { charttypeindex } = this.state;
 
@@ -132,6 +133,7 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
             return <EmptyState />;
         }
 
+        const fillcolor =nrqlQueries[this.state.activequeryindex].fill;
         return (
             <AutoSizer>
                 {({ width, height }) => (
@@ -152,13 +154,16 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
 
 
                             const testme = this.transformDataPie(data);
+//  <VictoryPie colorScale={["tomato", "orange", "gold", "cyan", "navy"]} data={testme}  />
+                            
 
-                            const fillcolor = fill;
-                            if (charttypeindex == 0) {
+                            if (this.state.activequeryindex == 0) {
                                 return (
-                                   
 
-                                        <VictoryPie colorScale={["tomato", "orange", "gold", "cyan", "navy"]} data={testme}  />
+                                    <VictoryChart animate={{ duration: 5000 }}>
+                                    <VictoryBar  style={{ data: { fill: fillcolor } }} data={testme}  />
+                                </VictoryChart>
+                                      
 
                                    
                                 );

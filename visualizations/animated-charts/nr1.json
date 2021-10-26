@@ -20,14 +20,14 @@
                     "title": "Query",
                     "description": "NRQL query for visualization",
                     "type": "nrql"
+                }, 
+                {
+                    "name": "fill",
+                   "title": "Bar Chart Fill color",
+                   "description": "A fill color to override the default fill color",
+                    "type": "string"
                 }
             ]
-        },
-        {
-            "name": "fill",
-            "title": "Bar Chart Fill color",
-            "description": "A fill color to override the default fill color",
-            "type": "string"
         },
         {
             "name": "intervalms",
