@@ -20,11 +20,11 @@
                     "title": "Query",
                     "description": "NRQL query for visualization",
                     "type": "nrql"
-                }, 
+                },
                 {
-                    "name": "fill",
-                   "title": "Bar Chart Fill color",
-                   "description": "A fill color to override the default fill color",
+                    "name": "title",
+                    "title": "Bar Chart title",
+                    "description": "title your bar chart",
                     "type": "string"
                 }
             ]

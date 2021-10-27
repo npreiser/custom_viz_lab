@@ -2,25 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as V from 'victory';
-import { VictoryBar, VictoryScatter, VictoryChart, VictoryTheme, VictoryPie, VictoryLine } from 'victory';
+import { VictoryBar, VictoryScatter, VictoryChart, VictoryTheme, VictoryPie, VictoryLabel, VictoryLegend } from 'victory';
 import { Card, CardBody, HeadingText, NrqlQuery, Spinner, AutoSizer } from 'nr1';
 
 export default class Nr1AnimationViz1Visualization extends React.Component {
     // Custom props you wish to be configurable in the UI must also be defined in
     // the nr1.json file for the visualization. See docs for more details.
     static propTypes = {
-        /**
-         * A fill color to override the default fill color. This is an example of
-         * a custom chart configuration.
-         */
-       // backgroundcolor: PropTypes.string,
-
-        /**
-         * A stroke color to override the default stroke color. This is an example of
-         * a custom chart configuration.
-         */
-        stroke: PropTypes.string,
-
         intervalms: PropTypes.number,
         /**
          * An array of objects consisting of a nrql `query` and `accountId`.
@@ -30,7 +18,7 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
             PropTypes.shape({
                 accountId: PropTypes.number,
                 query: PropTypes.string,
-                fill: PropTypes.string,
+                title: PropTypes.string,
             })
         ),
     };
@@ -40,7 +28,6 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
         super(props);
         this.state = {
             activequeryindex: 0,
-            charttypeindex: 0
         };
     }
 
@@ -48,35 +35,26 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
     /** Method called when the react component mounts (is loaded)  */
     componentDidMount() {
 
-        const { nrqlQueries, stroke, fill,intervalms } = this.props;
+        const { nrqlQueries, intervalms } = this.props;
         let intval = 6000;
-        if(intervalms != undefined)
-        {
+        if (intervalms != undefined) {
             intval = intervalms
         }
         this.setStateInterval = window.setInterval(() => {   // create a timer 
 
-            const { nrqlQueries, stroke, fill,intervalms } = this.props;
+            const { nrqlQueries, intervalms } = this.props;
             // use a temp variable to determine next value of index:
+            if (nrqlQueries.length > 1) {
+                var temp = this.state.activequeryindex;
+                temp++;
+                if (temp > nrqlQueries.length - 1)
+                    temp = 0;
 
-           
-            var temp = this.state.activequeryindex;
-            temp++;
-            if (temp > nrqlQueries.length - 1)
-                temp = 0;
-
-            // toggle chart type index
-            var temp2 = this.state.charttypeindex;
-            if (temp2 == 0)
-                temp2 = 1
-            else
-                temp2 = 0;
-
-            this.setState({
-                pieData: this.getRandomData(),
-                activequeryindex: temp,
-                charttypeindex: temp2
-            });
+                this.setState({
+                   // pieData: this.getRandomData(),
+                    activequeryindex: temp,
+                });
+            }
         }, intval);   // every X ms
     }
 
@@ -119,9 +97,7 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
 
 
     render() {
-        const { nrqlQueries, stroke, backgroundcolor } = this.props;
-
-        const { charttypeindex } = this.state;
+        const { nrqlQueries } = this.props;
 
         const nrqlQueryPropsAvailable =
             nrqlQueries &&
@@ -133,7 +109,11 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
             return <EmptyState />;
         }
 
-        const fillcolor =nrqlQueries[this.state.activequeryindex].fill;
+        // get the title for the active chart
+        const charttitle = nrqlQueries[this.state.activequeryindex].title;
+
+
+        const fillcolor = nrqlQueries[this.state.activequeryindex].fill;
         return (
             <AutoSizer>
                 {({ width, height }) => (
@@ -152,29 +132,26 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
                             }
 
 
-
                             const testme = this.transformDataPie(data);
-//  <VictoryPie colorScale={["tomato", "orange", "gold", "cyan", "navy"]} data={testme}  />
-                            
-
+                            //  <VictoryPie colorScale={["tomato", "orange", "gold", "cyan", "navy"]} data={testme}  />
                             if (this.state.activequeryindex == 0) {
                                 return (
-
-                                    <VictoryChart animate={{ duration: 5000 }}>
-                                    <VictoryBar  style={{ data: { fill: fillcolor } }} data={testme}  />
-                                </VictoryChart>
-                                      
-
-                                   
+                                    <div style={{ textAlign: "center", paddingTop: "30px" }}>
+                                        <h1>{charttitle}</h1>
+                                        <VictoryChart animate={{ duration: 4000 }}  >
+                                            <VictoryBar style={{ data: { fill: fillcolor } }} data={testme} />
+                                        </VictoryChart>
+                                    </div>
                                 );
                             }
                             else {
                                 return (
-                                    <VictoryChart animate={{ duration: 5000 }}>
-
-                                        <VictoryBar  style={{ data: { fill: fillcolor } }} data={testme}  />
-
-                                    </VictoryChart>
+                                    <div style={{ textAlign: "center", paddingTop: "30px" }}>
+                                        <h1>{charttitle}</h1>
+                                        <VictoryChart animate={{ duration: 4000 }} >
+                                            <VictoryBar style={{ data: { fill: fillcolor } }} data={testme} />
+                                        </VictoryChart>
+                                    </div>
                                 );
                             }
                         }}
