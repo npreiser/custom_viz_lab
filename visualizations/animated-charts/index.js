@@ -118,8 +118,8 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
         // get the title for the active chart
         const charttitle = nrqlQueries[this.state.activequeryindex].title;
 
-        const fillcolor = nrqlQueries[this.state.activequeryindex].fill;
-        //const fillcolor = "#FFBb00";
+      //  const fillcolor = nrqlQueries[this.state.activequeryindex].fill;   <-->>>>
+        const fillcolor = "#FFBb00";
 
 
         
