@@ -46,12 +46,17 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
             // use a temp variable to determine next value of index:
             if (nrqlQueries.length > 1) {
                 var temp = this.state.activequeryindex;
-                temp++;
-                if (temp > nrqlQueries.length - 1)
+                if (temp == 0 && nrqlQueries[temp+1].query) {
+                    temp++; //1
+                }
+                else if (temp == 1) {
                     temp = 0;
+                }
+                // if (temp > nrqlQueries.length - 1)
+                //     temp = 0;
 
                 this.setState({
-                   // pieData: this.getRandomData(),
+                // pieData: this.getRandomData(),
                     activequeryindex: temp,
                 });
             }
@@ -113,7 +118,7 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
         const charttitle = nrqlQueries[this.state.activequeryindex].title;
 
 
-        const fillcolor = nrqlQueries[this.state.activequeryindex].fill;
+        const fillcolor = "#FFBb00";
         return (
             <AutoSizer>
                 {({ width, height }) => (
