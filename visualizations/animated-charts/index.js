@@ -19,6 +19,8 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
                 accountId: PropTypes.number,
                 query: PropTypes.string,
                 title: PropTypes.string,
+                fill: PropTypes.string,
+
             })
         ),
     };
@@ -49,6 +51,10 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
                 temp++;
                 if (temp > nrqlQueries.length - 1)
                     temp = 0;
+
+                  if(nrqlQueries[temp].query == undefined || nrqlQueries[temp].accountId == undefined)
+                    temp = 0;  // 
+
 
                 this.setState({
                    // pieData: this.getRandomData(),
@@ -112,8 +118,11 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
         // get the title for the active chart
         const charttitle = nrqlQueries[this.state.activequeryindex].title;
 
-
         const fillcolor = nrqlQueries[this.state.activequeryindex].fill;
+        //const fillcolor = "#FFBb00";
+
+
+        
         return (
             <AutoSizer>
                 {({ width, height }) => (
