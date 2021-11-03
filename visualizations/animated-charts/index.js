@@ -19,8 +19,6 @@ export default class Nr1AnimationViz1Visualization extends React.Component {
                 accountId: PropTypes.number,
                 query: PropTypes.string,
                 title: PropTypes.string,
-                fill: PropTypes.string,
-
             })
         ),
     };
